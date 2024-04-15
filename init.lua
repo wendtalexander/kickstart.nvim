@@ -805,11 +805,13 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'html', 'python', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
+      disable_install = { 'latex' },
       highlight = {
         enable = true,
+        disable = { 'latex' },
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
@@ -907,6 +909,23 @@ require('lazy').setup({
     main = 'ibl',
     opts = {},
   },
+  {
+    'danymat/neogen',
+    config = true,
+    -- Uncomment next line if you want to follow only stable versions
+    -- version = "*"
+    opt = {
+      enabled = true,
+      languages = {
+        python = {
+          template = {
+            annotation_convention = 'numpydoc',
+          },
+        },
+      },
+    },
+  },
+
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
