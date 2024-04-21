@@ -960,7 +960,7 @@ require('lazy').setup({
     dependencies = 'nvim-lua/plenary.nvim',
     config = true,
     keys = { -- load the plugin only when using it's keybinding:
-      { '<leader>u', "<cmd>lua require('undotree').toggle()<cr>" },
+      { '<leader>u', "<cmd>lua require('undotree').toggle()<cr>", desc = 'Toggle [U]ndo Tree' },
     },
   },
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
