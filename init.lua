@@ -213,6 +213,9 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- [[ Python Path varibales ]]
+-- vim.g.python3_host_prog = '/home/acfw/.pyenv/shims/python3'
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -967,6 +970,10 @@ require('lazy').setup({
       view_options = {
         show_hidden = true,
       },
+      keymaps = {
+        ['<C-h>'] = false,
+        ['<M-h>'] = 'actions.select_split',
+      },
     },
     -- Optional dependencies
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -990,7 +997,7 @@ require('lazy').setup({
   --
   -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  require 'kickstart.plugins.lint',
+  -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
