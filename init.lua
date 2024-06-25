@@ -657,7 +657,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -856,29 +856,6 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
-    config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-      -- Prefer git instead of curl in order to improve connectivity in some environments
-      require('nvim-treesitter.install').prefer_git = true
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
-        -- Autoinstall languages that are not installed
-        auto_install = true,
-        ignore_install = { 'latex' },
-        highlight = { enable = true, disable = { 'latex' } },
-        indent = { enable = true },
-      }
-      require('nvim-treesitter.configs').setup(opts)
-
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-    end,
   },
 
   {
@@ -935,9 +912,11 @@ require('lazy').setup({
   {
     {
       'lervag/vimtex',
+      lazy = false,
       init = function()
         vim.g['vimtex_compiler_method'] = 'latexmk'
         vim.g['vimtex_view_method'] = 'zathura'
+        vim.g['vimtex.syntax_enabled'] = 1
       end,
     },
   },
@@ -950,19 +929,20 @@ require('lazy').setup({
   },
   {
     'danymat/neogen',
-    config = true,
     -- Uncomment next line if you want to follow only stable versions
     -- version = "*"
-    opt = {
-      enabled = true,
-      languages = {
-        python = {
-          template = {
-            annotation_convention = 'numpydoc',
+    config = function()
+      require('neogen').setup {
+        enabled = true,
+        languages = {
+          python = {
+            template = {
+              annotation_convention = 'numpydoc',
+            },
           },
         },
-      },
-    },
+      }
+    end,
   },
   {
     'stevearc/oil.nvim',
@@ -972,6 +952,7 @@ require('lazy').setup({
       },
       keymaps = {
         ['<C-h>'] = false,
+        ['<C-l>'] = false,
         ['<M-h>'] = 'actions.select_split',
       },
     },
