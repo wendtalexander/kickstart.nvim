@@ -624,7 +624,8 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},
+        -- pyright = {},
+        --
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -698,28 +699,28 @@ require('lazy').setup({
     },
     opts = {
       notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        local lsp_format_opt
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          lsp_format_opt = 'never'
-        else
-          lsp_format_opt = 'fallback'
-        end
-        return {
-          timeout_ms = 500,
-          lsp_format = lsp_format_opt,
-        }
-      end,
+      -- format_on_save = function(bufnr)
+      --   -- Disable "format_on_save lsp_fallback" for languages that don't
+      --   -- have a well standardized coding style. You can add additional
+      --   -- languages here or re-enable it for the disabled ones.
+      --   local disable_filetypes = { c = true, cpp = true }
+      --   local lsp_format_opt
+      --   if disable_filetypes[vim.bo[bufnr].filetype] then
+      --     lsp_format_opt = 'never'
+      --   else
+      --     lsp_format_opt = 'fallback'
+      --   end
+      --   return {
+      --     timeout_ms = 500,
+      --     lsp_format = lsp_format_opt,
+      --   }
+      -- end,
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = function(bufnr)
           if require('conform').get_formatter_info('ruff_format', bufnr).available then
-            return { 'ruff_format' }
+            return { 'ruff_format', 'isort' }
           else
             return { 'isort', 'black' }
           end
@@ -1017,6 +1018,36 @@ require('lazy').setup({
       vim.keymap.set('n', '<C-Space>', nvim_tmux_nav.NvimTmuxNavigateNext)
     end,
   },
+  {
+    'hat0uma/csvview.nvim',
+    ---@module "csvview"
+    ---@type CsvView.Options
+    opts = {
+      parser = { comments = { '#', '//' } },
+      keymaps = {
+        -- Text objects for selecting fields
+        textobject_field_inner = { 'if', mode = { 'o', 'x' } },
+        textobject_field_outer = { 'af', mode = { 'o', 'x' } },
+        -- Excel-like navigation:
+        -- Use <Tab> and <S-Tab> to move horizontally between fields.
+        -- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
+        -- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
+        jump_next_field_end = { '<Tab>', mode = { 'n', 'v' } },
+        jump_prev_field_end = { '<S-Tab>', mode = { 'n', 'v' } },
+        jump_next_row = { '<Enter>', mode = { 'n', 'v' } },
+        jump_prev_row = { '<S-Enter>', mode = { 'n', 'v' } },
+      },
+    },
+    cmd = { 'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle' },
+  },
+  {
+    'quarto-dev/quarto-nvim',
+    dependencies = {
+      'jmbuhr/otter.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+  },
+
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
