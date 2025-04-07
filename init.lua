@@ -953,7 +953,10 @@ require('lazy').setup({
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = 'ibl',
-    opts = {},
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {}
+
   },
   {
     'danymat/neogen',
@@ -974,8 +977,6 @@ require('lazy').setup({
   },
   {
     'stevearc/oil.nvim',
-    -- Optional dependencies
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('oil').setup {
         columns = { 'icon' },
@@ -992,6 +993,8 @@ require('lazy').setup({
       -- Open parent directory in current window
       vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
     end,
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
     'jiaoshijie/undotree',
